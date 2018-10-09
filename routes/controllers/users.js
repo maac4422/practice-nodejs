@@ -8,7 +8,11 @@ const {User} = require('../../db/models/user')
 /* GET users listing. */
 
 exports.getUsers = function (req, res, next) {
-    res.json({users: [{name: 'Timmy'}]})
+    User.find().then((users) => {
+        res.send({users})
+    },(e) => {
+        res.status(400).send(e)
+    })
 }
 
 //module.exports = router
