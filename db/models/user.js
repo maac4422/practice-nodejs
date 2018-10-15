@@ -64,19 +64,19 @@ UserSchema.methods.removeToken = function (token) {
 };
 
 UserSchema.statics.findByToken = function (token) {
-  var User = this;
-  var decoded;
+  let User = this;
+  let decoded;
 
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (e) {
-    return Promise.reject();
+    return Promise.reject(e);
   }
 
   return User.findOne({
-    '_id': decoded._id,
-    'tokens.token': token,
-    'tokens.access': 'auth'
+    _id : decoded._id,
+    'tokens.access': decoded.access,
+    'tokens.token': token
   });
 };
 

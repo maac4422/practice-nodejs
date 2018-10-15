@@ -5,6 +5,7 @@ const lodash = require('lodash');
 const {mongoose} = require('../../db/mongoose')
 const {User} = require('../../db/models/user')
 
+
 /* GET users listing. */
 
 exports.getUsers = function (req, res, next) {
@@ -31,13 +32,6 @@ exports.postUser = function(req,res,next){
 exports.loginUser = function(req,res,next){
     let body = lodash.pick(req.body, ['email', 'password']);
 
-    /*User.findOne({
-        email: body.email
-    }).then((user) => {
-        res.send({user})
-    }, (e) => {
-        res.status(400).send(e)
-    })*/
     User.findByCredentials(body.email, body.password).then((user) => {
         //res.send({user})
         return user.generateAuthToken().then((token) => {
@@ -46,4 +40,12 @@ exports.loginUser = function(req,res,next){
     }).catch((e) => {
         res.status(400).send(e);
     });
+}
+
+exports.getCurrentUser = function(req,res,next){
+    res.send(req.user);
+}
+
+exports.logoutUser = function(req,res,next){
+
 }
