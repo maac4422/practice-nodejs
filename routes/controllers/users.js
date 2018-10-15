@@ -47,5 +47,9 @@ exports.getCurrentUser = function(req,res,next){
 }
 
 exports.logoutUser = function(req,res,next){
-
+    req.user.removeToken(req.token).then(() =>{
+        res.status(200).send();
+    }).catch((e) => {
+        res.status(400).send(e);
+    })
 }

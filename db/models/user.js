@@ -54,7 +54,7 @@ UserSchema.methods.generateAuthToken = function () {
 };
 
 UserSchema.methods.removeToken = function (token) {
-  var user = this;
+  let user = this;
 
   return user.update({
     $pull: {

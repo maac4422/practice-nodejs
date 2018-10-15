@@ -6,4 +6,5 @@ exports.assignRoutes = function (app) {
     app.post('/api/v1/users',users.postUser)
     app.post('/api/v1/users/auth',users.loginUser)
     app.get('/api/v1/users/me',authenticate,users.getCurrentUser)
+    app.delete('/api/v1/users/logout',authenticate,users.logoutUser)
 }
