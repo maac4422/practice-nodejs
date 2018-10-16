@@ -7,6 +7,8 @@
 const app = require('../app')
 const debug = require('debug')('api-practice:server')
 const http = require('http')
+const makeHandlers = require('../sockets/handlers')
+const webSocket = require('ws');
 
 /**
  * Get port from environment and store in Express.
@@ -15,11 +17,32 @@ const http = require('http')
 const port = normalizePort(process.env.PORT || '3000')
 app.set('port', port)
 
+
 /**
  * Create HTTP server.
  */
 
 const server = http.createServer(app)
+
+
+/**
+ * Socket connection
+*/
+const wss = new webSocket.Server({ server });
+
+wss.on('connection', (ws) => {
+
+  //connection is up, let's add a simple simple event
+  ws.on('message', (message) => {
+
+      //log the received message and send it back to the client
+      console.log('received: %s', message);
+      ws.send(`Hello, you sent -> ${message}`);
+  });
+
+  //send immediatly a feedback to the incoming connection    
+  ws.send('Hi there, I am a WebSocket server');
+});
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -88,3 +111,5 @@ function onListening() {
     : 'port ' + addr.port
   debug('Listening on ' + bind)
 }
+
+
